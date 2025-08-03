@@ -12,12 +12,12 @@ npm run dev
 
 ## 📊 Health Check
 
-- **URL**: `http://localhost:3000/health`
+- **URL**: `http://localhost:3001/health`
 - **Response**: Status de l'application et métriques
 
 ## 🏆 API
 
-- **Base URL**: `http://localhost:3000/api/tournaments`
+- **Base URL**: `http://localhost:3001/api/tournaments`
 - **Documentation**: Voir section API ci-dessous
 
 ### Routes disponibles
@@ -92,3 +92,4 @@ DEBUG=* npm run dev
 ### Health checks
 - Application: `http://localhost:3000/health`
 - Database: Via Prisma connection
+
