@@ -12,30 +12,30 @@ npm run dev
 
 ## 📊 Health Check
 
-- **URL**: `http://localhost:3000/health`
+- **URL**: `http://localhost:3001/health`
 - **Response**: Status de l'application et métriques
 
 ## 🏆 API
 
-- **Base URL**: `http://localhost:3000/api/tournaments`
+- **Base URL**: `http://localhost:3001/api/tournaments`
 - **Documentation**: Voir section API ci-dessous
 
 ### Routes disponibles
 
 #### Publiques
 - `GET /` - Liste des tournois
-- `GET /:id` - Détails d'un tournoi  
-- `GET /:id/teams` - Équipes d'un tournoi
+- `GET /:tournamentId` - Détails d'un tournoi  
+- `GET /:tournamentId/teams` - Équipes d'un tournoi
 
 #### Protégées (auth requise)
 - `POST /organizer/:organizerId` - Créer un tournoi
-- `PATCH /:id` - Modifier un tournoi
-- `DELETE /:id` - Supprimer un tournoi
-- `PATCH /:id/draft` - Brouillon un tournoi
-- `PATCH /:id/publish` - Publier un tournoi
-- `PATCH /:id/start` - Démarrer un tournoi
-- `PATCH /:id/finish` - Terminer un tournoi
-- `PATCH /:id/cancel` - Annuler un tournoi
+- `PATCH /:tournamentId` - Modifier un tournoi
+- `DELETE /:tournamentId` - Supprimer un tournoi
+- `PATCH /:tournamentId/draft` - Brouillon un tournoi
+- `PATCH /:tournamentId/publish` - Publier un tournoi
+- `PATCH /:tournamentId/start` - Démarrer un tournoi
+- `PATCH /:tournamentId/finish` - Terminer un tournoi
+- `PATCH /:tournamentId/cancel` - Annuler un tournoi
 
 ## 🧪 Tests
 
@@ -92,3 +92,4 @@ DEBUG=* npm run dev
 ### Health checks
 - Application: `http://localhost:3000/health`
 - Database: Via Prisma connection
+
