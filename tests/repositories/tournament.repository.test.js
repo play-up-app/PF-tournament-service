@@ -587,8 +587,30 @@ describe('TournamentRepository', () => {
 
   describe('getTournamentWithTeams', () => {
     it('devrait récupérer un tournoi avec ses équipes avec succès', async () => {
-      const mockTournamentWithTeams = {
-        id: validUUID,
+      const mockTournamentWithTeams = [
+        {
+          id: validUUID,
+          name: undefined,
+          description: undefined,
+          tournament_id: undefined,
+          captain_id: undefined,
+          status: undefined,
+          contact_email: undefined,
+          contact_phone: undefined,
+          skill_level: undefined,
+          notes: undefined,
+          created_at: undefined,
+          updated_at: undefined,
+          members: [
+            {
+              name: 'Player 1',
+              email: 'player@example.com',
+            },
+          ],
+        },
+      ];
+
+      mockPrismaClient.tournament.findUnique.mockResolvedValue({
         team: [
           {
             id: validUUID,
@@ -603,16 +625,14 @@ describe('TournamentRepository', () => {
             ],
           },
         ],
-      };
-
-      mockPrismaClient.tournament.findUnique.mockResolvedValue(mockTournamentWithTeams);
+      });
 
       const result = await tournamentRepository.getTournamentWithTeams(validUUID);
 
       expect(result).toEqual(mockTournamentWithTeams);
       expect(mockPrismaClient.tournament.findUnique).toHaveBeenCalledWith({
         where: { id: validUUID },
-        include: expect.any(Object),
+        select: expect.any(Object),
       });
     });
 
