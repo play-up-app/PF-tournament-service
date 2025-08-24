@@ -1,15 +1,18 @@
 import { createClient } from '@supabase/supabase-js'
+import dotenv from 'dotenv'
+import { prismaClient } from '../config/prisma.js'
+dotenv.config()
 
 // Configuration Supabase
-const supabaseUrl = process.env.SUPABASE_URL || 'https://your-project.supabase.co'
-const supabaseKey = process.env.SUPABASE_ANON_KEY || 'your-anon-key'
+const supabaseUrl = process.env.SUPABASE_URL
+const supabaseKey = process.env.SUPABASE_KEY
 const supabase = createClient(supabaseUrl, supabaseKey)
 
 
 export const authenticateToken = async (req, res, next) => {
     try {
         const token = req.cookies?.access_token || req.headers.authorization?.replace('Bearer ', '')
-        
+
         if (!token) {
             return res.status(401).json({ 
                 success: false,
@@ -17,22 +20,25 @@ export const authenticateToken = async (req, res, next) => {
                 data: null
             })
         }
-        
-        // TODO: Intégrer avec le auth-service pour vérifier le token
-        // Pour l'instant, simulation simple pour le MVP
-        req.user = {
-            id: 'user-123',
-            email: 'test@example.com',
-            role: 'organisateur',
-            display_name: 'Test User'
+        const { data: { user: { user_metadata } }, error } = await supabase.auth.getUser(token)
+
+        if (error) {
+            return res.status(401).json({ 
+                success: false,
+                message: error.message,
+                data: null
+            })
         }
-        
+        req.user = {
+            id: user_metadata.sub,
+            email: user_metadata.email,
+            role: user_metadata.role,
+        }
         next()
     } catch (error) {
-        console.error('Auth error:', error)
         res.status(401).json({
             success: false,
-            message: 'Token invalide',
+            message: error.message,
             data: null
         })
     }
@@ -84,6 +90,6 @@ export const requireTournamentOwner = (req, res, next) => {
 
 // Middlewares spécialisés
 export const requireAuth = authenticateToken
-export const requireOrganisateur = authorizeRole(['organisateur', 'admin'])
-export const requireJoueur = authorizeRole(['joueur', 'organisateur', 'admin'])
-export const requireSpectateur = authorizeRole(['spectateur', 'joueur', 'organisateur', 'admin']) 
+export const requireOrganisateur = [authenticateToken, authorizeRole(['organisateur', 'admin'])]
+export const requireJoueur = [authenticateToken, authorizeRole(['joueur', 'organisateur', 'admin'])]
+export const requireSpectateur = [authenticateToken, authorizeRole(['spectateur', 'joueur', 'organisateur', 'admin'])] 
