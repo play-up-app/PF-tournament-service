@@ -7,10 +7,33 @@ export default class TournamentController {
     // Créer un tournoi
     createTournament = async (req, res) => {
         try {
-            const { organizerId } = req.params
+            // Debug: Vérifier req.user
+            console.log('🔍 req.user:', req.user)
+            console.log('🔍 req.headers:', req.headers)
+            
+            const organizerId = req.user.id
+            const organizerRole = req.user.role
             const tournamentData = req.body
 
-            // Validation simple
+            // Validation de l'authentification
+            if (!organizerId) {
+                return res.status(401).json({
+                    success: false,
+                    message: "Authentification requise pour créer un tournoi",
+                    data: null
+                })
+            }
+
+            // Validation du rôle (double vérification)
+            if (!['organisateur', 'admin'].includes(organizerRole)) {
+                return res.status(403).json({
+                    success: false,
+                    message: "Rôle d'organisateur requis pour créer un tournoi",
+                    data: null
+                })
+            }
+
+            // Validation des données
             if (!tournamentData.name || !tournamentData.max_teams) {
                 return res.status(400).json({
                     success: false,
@@ -40,7 +63,7 @@ export default class TournamentController {
     getTournament = async (req, res) => {
         try {
             const { tournamentId } = req.params
-            
+
             const tournament = await this.tournamentRepository.getTournament(tournamentId)
             
             if (!tournament) {

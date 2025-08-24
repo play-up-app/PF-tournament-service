@@ -127,21 +127,25 @@ export default class TournamentRepository {
 
             const tournaments = await prismaClient.tournament.findMany({
                 where: whereClause,
-                include: {
-                    profile: {
-                        select: {
-                            id: true,
-                            display_name: true,
-                            email: true
-                        }
-                    },
-                    team: {
-                        select: {
-                            id: true,
-                            name: true,
-                            status: true
-                        }
-                    }
+                select: {
+                    id: true,
+                    name: true,
+                    description: true,
+                    courts_available: true,
+                    match_duration_minutes: true,
+                    break_duration_minutes: true,
+                    constraints: true,
+                    organizer_id: true,
+                    status: true,
+                    created_at: true,
+                    updated_at: true,
+                    start_date: true,
+                    start_time: true,
+                    max_teams: true,
+                    registered_teams: true,
+                    tournament_type: true,
+                    max_teams: true,
+                    registered_teams: true
                 },
                 skip: (page - 1) * limit,
                 take: limit,
@@ -280,11 +284,23 @@ export default class TournamentRepository {
         try {
             const tournament = await prismaClient.tournament.findUnique({
                 where: { id: tournamentId },
-                include: {
+                select: {
                     team: {
-                        include: {
+                        select: {
+                            id: true,
+                            name: true,
+                            description: true,
+                            tournament_id: true,
+                            captain_id: true,
+                            status: true,
+                            contact_email: true,
+                            contact_phone: true,
+                            skill_level: true,
+                            notes: true,
+                            created_at: true,
+                            updated_at: true,
                             team_member: {
-                                include: {
+                                select: {
                                     profile: {
                                         select: {
                                             id: true,
@@ -293,55 +309,32 @@ export default class TournamentRepository {
                                         }
                                     }
                                 }
-                            },
-                            team_ranking: {
-                                select: {
-                                    point: true,
-                                    matches_played: true,
-                                    matches_won: true,
-                                    matches_lost: true,
-                                    ranking_position: true
-                                }
                             }
-                        }
-                    },
-                    match: {
-                        select: {
-                            id: true,
-                            court_number: true,
-                            schedule_time: true,
-                            actual_start_time: true,
-                            actual_end_time: true,
-                            status: true,
-                            team_a_score: true,
-                            team_b_score: true,
-                            phase: true,
-                            round_number: true
-                        }
-                    },
-                    team_ranking: {
-                        include: {
-                            team: {
-                                select: {
-                                    id: true,
-                                    name: true
-                                }
-                            }
-                        },
-                        orderBy: {
-                            ranking_position: 'asc'
-                        }
-                    },
-                    profile: {
-                        select: {
-                            id: true,
-                            display_name: true,
-                            email: true,
-                            role: true
                         }
                     }
                 }
-            })
+            }).then(tournament => tournament.team.map(team => {
+                return {
+                    id: team.id,
+                    name: team.name,
+                    description: team.description,
+                    tournament_id: team.tournament_id,
+                    captain_id: team.captain_id,
+                    status: team.status,
+                    contact_email: team.contact_email,
+                    contact_phone: team.contact_phone,
+                    skill_level: team.skill_level,
+                    notes: team.notes,
+                    created_at: team.created_at,
+                    updated_at: team.updated_at,
+                    members: team.team_member.map(member => {
+                        return {
+                            name: member.profile.display_name,
+                            email: member.profile.email
+                        }
+                    })
+                }
+            }))
             return tournament
         } catch (error) {
             console.error('Error fetching tournament with teams:', error)
