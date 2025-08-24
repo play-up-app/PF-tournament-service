@@ -11,7 +11,11 @@
     "start": "node index.js",
     "build": "docker build -t tournament-service .",
     "lint": "echo 'Linting...' && exit 0",
-    "ci": "npm run test:coverage && npm run build"
+    "ci": "npm run test:coverage && npm run build",
+    "deps:check": "node scripts/dependabot-helper.js all",
+    "deps:security": "node scripts/dependabot-helper.js security",
+    "deps:outdated": "node scripts/dependabot-helper.js outdated",
+    "deps:info": "node scripts/dependabot-helper.js info"
   },
   "repository": {
     "type": "git",
