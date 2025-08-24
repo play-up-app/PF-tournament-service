@@ -1,0 +1,95 @@
+# Configuration Dependabot pour le Tournament Service
+# 🚀 Version Junior-Friendly - Facile à comprendre et maintenir
+
+version: 2
+updates:
+  # 📦 Mises à jour des dépendances npm (JavaScript/Node.js)
+  - package-ecosystem: "npm"
+    directory: "/"  # Dossier racine du service
+    schedule:
+      interval: "weekly"  # Vérification hebdomadaire
+      day: "monday"       # Tous les lundis
+      time: "09:00"       # À 9h du matin
+      timezone: "Europe/Paris"
+    
+    # 🔧 Configuration des Pull Requests
+    open-pull-requests-limit: 5  # Maximum 5 PR ouvertes en même temps
+    
+    # 🎯 Configuration des mises à jour
+    commit-message:
+      prefix: "chore"            # Type de commit standard
+      prefix-development: "chore"
+      include: "scope"
+    
+    # 📋 Labels automatiques pour faciliter le tri
+    labels:
+      - "dependencies"
+      - "automated"
+      - "security"               # Si mise à jour de sécurité
+    
+    # 🔒 Configuration de sécurité
+    ignore:
+      # Ignorer les mises à jour majeures automatiquement (breaking changes)
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+    
+    # ✅ Configuration des tests
+    rebase-strategy: "auto"      # Rebase automatique
+    target-branch: "develop"     # Branche cible
+    
+    # 🔄 Configuration des mises à jour
+    versioning-strategy: "auto"  # Stratégie automatique
+
+  # 🔒 Mises à jour de sécurité (priorité haute)
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "daily"          # Vérification quotidienne pour la sécurité
+      time: "08:00"
+      timezone: "Europe/Paris"
+    
+    # Configuration spécifique pour la sécurité
+    open-pull-requests-limit: 3
+    
+    # Labels spécifiques à la sécurité
+    labels:
+      - "security"
+      - "dependencies"
+      - "high-priority"
+    
+    # Ignorer seulement les mises à jour majeures non-sécuritaires
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
+
+  # 🐳 Mises à jour Docker (si applicable)
+  - package-ecosystem: "docker"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "tuesday"
+      time: "10:00"
+      timezone: "Europe/Paris"
+    
+    open-pull-requests-limit: 2
+    
+    labels:
+      - "docker"
+      - "dependencies"
+      - "automated"
+
+  # 🔧 Mises à jour GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+      day: "wednesday"
+      time: "11:00"
+      timezone: "Europe/Paris"
+    
+    open-pull-requests-limit: 3
+    
+    labels:
+      - "github-actions"
+      - "dependencies"
+      - "automated"
