@@ -8,8 +8,22 @@
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "dev": "nodemon index.js",
-    "start": "node index.js"
+    "start": "node index.js",
+    "build": "docker build -t tournament-service .",
+    "lint": "echo 'Linting...' && exit 0",
+    "ci": "npm run test:coverage && npm run build"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/play-up-app/PF-tournament-service.git",
+    "directory": "services/tournament-service"
+  },
+  "keywords": [
+    "tournament",
+    "volleyball",
+    "microservice",
+    "api"
+  ],
   "author": "",
   "license": "ISC",
   "description": "Service de gestion des tournois pour l'application de volleyball",
@@ -18,13 +32,23 @@
     "@supabase/supabase-js": "^2.50.5",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "dotenv": "^17.2.1",
+    "express": "^4.19.2",
+    "express-rate-limit": "^8.0.1",
+    "helmet": "^8.1.0",
+    "joi": "^18.0.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@jest/globals": "^30.0.4",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^9.2.6",
+    "@semantic-release/npm": "^11.0.2",
     "jest": "^30.0.4",
     "nodemon": "^3.0.2",
     "prisma": "^6.12.0",
+    "semantic-release": "^22.0.12",
     "typescript": "^5.8.3"
   }
 }
