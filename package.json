@@ -33,7 +33,7 @@
   "description": "Service de gestion des tournois pour l'application de volleyball",
   "dependencies": {
     "@prisma/client": "^6.11.1",
-    "@supabase/supabase-js": "^2.50.5",
+    "@supabase/supabase-js": "^2.57.2",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
