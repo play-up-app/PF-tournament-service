@@ -32,7 +32,7 @@
   "license": "ISC",
   "description": "Service de gestion des tournois pour l'application de volleyball",
   "dependencies": {
-    "@prisma/client": "^6.11.1",
+    "@prisma/client": "^6.16.0",
     "@supabase/supabase-js": "^2.50.5",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
