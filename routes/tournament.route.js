@@ -82,5 +82,9 @@ router.patch('/:tournamentId/cancel',
     tournamentController.cancelTournament
 );
 
-export default router
+router.patch('/:tournamentId/update-registered-teams-count',
+    validateRequest(tournamentIdSchema, 'params'),
+    tournamentController.updateRegisteredTeamsCount
+);
 
+export default router

@@ -320,4 +320,24 @@ export default class TournamentController {
             })
         }
     }
+
+    // Mettre à jour le compteur d'équipes inscrites
+    updateRegisteredTeamsCount = async (req, res) => {
+        try {
+            const { tournamentId } = req.params
+            const tournament = await this.tournamentRepository.updateRegisteredTeamsCount(tournamentId)
+            res.json({
+                success: true,
+                message: "Compteur d'équipes inscrites mis à jour avec succès",
+                data: tournament
+            })
+        } catch (error) {
+            console.error('Erreur mise à jour compteur équipes inscrites:', error)
+            res.status(500).json({
+                success: false,
+                message: "Erreur lors de la mise à jour du compteur d'équipes inscrites",
+                data: null
+            })
+        }
+    }
 }
