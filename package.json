@@ -8,14 +8,23 @@
     "test:watch": "NODE_OPTIONS=--experimental-vm-modules jest --watch",
     "test:coverage": "NODE_OPTIONS=--experimental-vm-modules jest --coverage",
     "dev": "nodemon index.js",
+    "prestart": "prisma generate",
     "start": "node index.js",
+    "postinstall": "prisma generate",
+    "prisma:generate": "prisma generate",
     "build": "docker build -t tournament-service .",
     "lint": "echo 'Linting...' && exit 0",
     "ci": "npm run test:coverage && npm run build",
     "deps:check": "node scripts/dependabot-helper.js all",
     "deps:security": "node scripts/dependabot-helper.js security",
     "deps:outdated": "node scripts/dependabot-helper.js outdated",
-    "deps:info": "node scripts/dependabot-helper.js info"
+    "deps:info": "node scripts/dependabot-helper.js info",
+    "monitor": "node scripts/alert-monitor.js",
+    "monitor:start": "node scripts/alert-monitor.js",
+    "monitor:test": "node scripts/test-alerts.js",
+    "monitor:demo": "node scripts/demo-alerts.js",
+    "monitor:quick": "node scripts/quick-test.js",
+    "monitor:system": "node scripts/test-system-metrics.js"
   },
   "repository": {
     "type": "git",
@@ -34,6 +43,7 @@
   "dependencies": {
     "@prisma/client": "^6.11.1",
     "@supabase/supabase-js": "^2.50.5",
+    "chalk": "^5.3.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^17.2.1",
